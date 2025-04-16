@@ -1,0 +1,75 @@
+{% extends 'quotes/base.html' %}
+{% load extract %}
+
+{% block content %}
+<form method="get" action="{% url 'quotes:search_by_tag' %}" class="d-flex mb-4" role="search">
+    <input name="tag" class="form-control me-2" type="search" placeholder="Search by tag" aria-label="Search">
+    <button class="btn btn-outline-success" type="submit">Search</button>
+  </form>
+
+  
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+              <div class="card-header">
+                <strong>Top 10 Tags</strong>
+              </div>
+              <ul class="list-group list-group-flush">
+                {% for tag, count in top_tags %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{% url 'quotes:quotes_by_tag' tag %}">{{ tag }}</a>
+                    <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+    {% for quote in quotes %}
+
+    <div class="quote" itemscope="" itemtype="http://schema.org/CreativeWork">
+        <span class="text" itemprop="text"> {{quote.quote}}</span>
+        <span>
+          Автор: <small class="author" itemprop="author">{{ quote.author_fullname }}</small>
+          <a href="{% url 'quotes:author_detail' quote.author_id %}">(про автора)</a>
+        </span>
+        <div class="tags">
+            Tags:
+            {% for tag in quote.tags%}
+            <a class="tag" href="/tag/{{tag}}">{{tag}}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endfor %}
+
+    <nav>
+        <ul class="pager pb-4">
+            <li class="previous">
+                {% if quotes.has_previous %}
+                <a href="{% url 'quotes:root_paginate' quotes.previous_page_number %}">
+                    <span aria-hidden="true">←</span> Previous
+                </a>
+                {% else %}
+                <span class="disabled"><span aria-hidden="true">←</span> Previous</span>
+                {% endif %}
+            </li>
+        
+            <li class="next">
+                {% if quotes.has_next %}
+                <a href="{% url 'quotes:root_paginate' quotes.next_page_number %}">
+                    Next <span aria-hidden="true">→</span>
+                </a>
+                {% else %}
+                <span class="disabled">Next <span aria-hidden="true">→</span></span>
+                {% endif %}
+            </li>
+        </ul>
+        
+    </nav>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'quotes/base.html' %}
+{% block content %}
+<div class="container mt-5">
+
+    <a href="{% url 'quotes:root' %}" class="btn btn-outline-secondary mb-4">← Back to Quotes</a>
+    
+  <div class="card mb-4 shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title">{{ author.fullname }}</h2>
+      <p class="card-subtitle text-muted">
+        Born: {{ author.born_date }} in {{ author.born_location }}
+      </p>
+      <hr>
+      <p class="card-text" style="white-space: pre-line;">
+        {{ author.description }}
+      </p>
+    </div>
+  </div>
+
+  <h4 class="mb-3">Quotes by {{ author.fullname }}</h4>
+
+  {% for quote in quotes %}
+    <div class="quote p-3 mb-3 border rounded shadow-sm">
+      <p class="mb-2"><em>{{ quote.quote }}</em></p>
+      <div class="tags">
+        {% if quote.tags %}
+          <strong>Tags:</strong>
+          {% for tag in quote.tags %}
+            <a class="badge bg-primary text-light me-1" href="/tag/{{ tag }}">{{ tag }}</a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No quotes found for this author.</p>
+  {% endfor %}
+</div>
+{% endblock %}

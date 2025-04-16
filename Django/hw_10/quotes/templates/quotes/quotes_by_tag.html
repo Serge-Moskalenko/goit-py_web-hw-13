@@ -1,0 +1,26 @@
+{% extends 'quotes/base.html' %}
+{% block content %}
+<div class="container mt-5">
+  <a href="{% url 'quotes:root' %}" class="btn btn-outline-secondary mb-4">← Back to Quotes</a>
+
+  {% if tag %}
+    <h3 class="mb-4">Search results for <span class="badge bg-primary">{{ tag }}</span></h3>
+  {% endif %}
+
+  {% for quote in quotes %}
+    <div class="quote p-3 mb-3 border rounded shadow-sm">
+      <p class="mb-2"><em>{{ quote.quote }}</em></p>
+      <div class="tags">
+        {% if quote.tags %}
+          <strong>Tags:</strong>
+          {% for tag_item in quote.tags %}
+            <a class="badge bg-primary text-light me-1" href="{% url 'quotes:quotes_by_tag' tag_item %}">{{ tag_item }}</a>
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No quotes found with this tag.</p>
+  {% endfor %}
+</div>
+{% endblock %}
