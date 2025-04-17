@@ -3,7 +3,7 @@
 This repository contains two separate backend projects built using modern Python frameworks:
 
 - `FastApi/` — asynchronous backend with FastAPI, PostgreSQL, Redis, Alembic, Email verification, and JWT authentication
-- `DjangoApp/` — backend with Django (under development)
+- `DjangoApp/` — backend with Django 
 
 ---
 
